@@ -13,9 +13,13 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class GridRecyclerView extends AppCompatActivity {
+
+    private static final int MAX_NUMBER_OF_GRID_ELEMENTS = 30;
 
     private RecyclerView                mRecyclerView;
     private RecyclerView.Adapter        mAdapter;
@@ -48,12 +52,17 @@ public class GridRecyclerView extends AppCompatActivity {
         getFiles(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath(),
                      mFileList);
 
+        if(mFileList.size() > MAX_NUMBER_OF_GRID_ELEMENTS){
+            long seed = System.nanoTime();
+            Collections.shuffle(mFileList, new Random(seed));
+            mFileList = mFileList.subList(0,MAX_NUMBER_OF_GRID_ELEMENTS);
+        }
+
 //        mAdapter = new DataAdapter(testDataSet);
 //        mAdapter = new DataAdapter(mFileNameString);
         mAdapter = new DataAdapter(mFileList);
         mRecyclerView.setAdapter(mAdapter);
 
-        testDataSet[6] = new String(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath());
 
         setGridListeners();
 
@@ -75,7 +84,7 @@ public class GridRecyclerView extends AppCompatActivity {
                 View child = rv.findChildViewUnder(e.getX(), e.getY());
                 if(child != null && gestureDetector.onTouchEvent(e)) {
                     int position = rv.getChildAdapterPosition(child);
-                    Toast.makeText(getApplicationContext(), testDataSet[position], Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), mFileList.get(position).getName(), Toast.LENGTH_SHORT).show();
                 }
 
                 return false;
@@ -100,6 +109,7 @@ public class GridRecyclerView extends AppCompatActivity {
     private void getFiles(String dirName, List<File> fileList){
 //        mFileDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
+
         File dir = new File(dirName);
         File[] fileTab = dir.listFiles();
 
@@ -111,7 +121,7 @@ public class GridRecyclerView extends AppCompatActivity {
             }
         }
 
-
+//
 //        if (mFileDir.isDirectory()) {
 //            mFileList = mFileDir.listFiles();
 //
