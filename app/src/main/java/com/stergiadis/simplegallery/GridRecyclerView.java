@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.Random;
 public class GridRecyclerView extends AppCompatActivity {
 
     private static final int MAX_NUMBER_OF_GRID_ELEMENTS = 30;
+    private static final String[] EXTENSIONS_STRING_TAB = {"jpg", "bmp", "png", "jpeg"};
 
     private RecyclerView                mRecyclerView;
     private RecyclerView.Adapter        mAdapter;
@@ -34,12 +36,11 @@ public class GridRecyclerView extends AppCompatActivity {
     private TextView    mTempTextView;
 
 
-    String[] testDataSet = {"one", "oni", "bum", "test", "test2", "fsdfb", "sfdg"};
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid_recycler_view);
+
 
         mRecyclerView = (RecyclerView) findViewById(R.id.grid_recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -47,13 +48,10 @@ public class GridRecyclerView extends AppCompatActivity {
         mLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-
-
+        //todo zabezpieczenia w razie pustego folderu lub braku karty itp
         mFileList = new ArrayList<File>();
-
         getFiles(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath(),
                      mFileList);
-
 
         //only n files showing, user can shuffle those with swipe down (swipeRefresh)
         if(mFileList.size() > MAX_NUMBER_OF_GRID_ELEMENTS){
@@ -62,11 +60,8 @@ public class GridRecyclerView extends AppCompatActivity {
             mFileList = mFileList.subList(0,MAX_NUMBER_OF_GRID_ELEMENTS);
         }
 
-//        mAdapter = new DataAdapter(testDataSet);
-//        mAdapter = new DataAdapter(mFileNameString);
         mAdapter = new DataAdapter(mFileList, getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
-
 
         setGridListeners();
 
@@ -127,16 +122,17 @@ public class GridRecyclerView extends AppCompatActivity {
 
 
 
-    // Search the dirName directory for files and also search all of the subdirectories
+    // Search the dirName directory and subdirectories for image files
     private void getFiles(String dirName, List<File> fileList){
-//        mFileDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-
 
         File dir = new File(dirName);
+
+
         File[] fileTab = dir.listFiles();
 
         for(File file : fileTab) {
-            if(file.isFile()) {
+            //check if it's a directory or a file, and check if the file has the right extension
+            if(file.isFile() && fileIsAnImage(file.getName())) {
                 fileList.add(file);
             } else if(file.isDirectory()){
                 getFiles(file.getAbsolutePath(), fileList);
@@ -144,6 +140,22 @@ public class GridRecyclerView extends AppCompatActivity {
         }
 
 //
+
+
+    }
+
+    private boolean fileIsAnImage(String filename) {
+        for (String extString : EXTENSIONS_STRING_TAB){
+            if (filename.endsWith("." + extString)) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+
+
 //        if (mFileDir.isDirectory()) {
 //            mFileList = mFileDir.listFiles();
 //
@@ -162,7 +174,3 @@ public class GridRecyclerView extends AppCompatActivity {
 //        } else {
 //            mTempTextView.setText("mFile is not a directory!" + mFileDir);
 //        }
-
-
-    }
-}
