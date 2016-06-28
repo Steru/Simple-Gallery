@@ -60,7 +60,7 @@ public class GridRecyclerView extends AppCompatActivity {
 
 //        mAdapter = new DataAdapter(testDataSet);
 //        mAdapter = new DataAdapter(mFileNameString);
-        mAdapter = new DataAdapter(mFileList);
+        mAdapter = new DataAdapter(mFileList, getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
 
 
