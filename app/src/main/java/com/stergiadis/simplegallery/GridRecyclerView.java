@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GridRecyclerView extends AppCompatActivity {
 
@@ -21,7 +23,7 @@ public class GridRecyclerView extends AppCompatActivity {
 
     private String[]    mFileNameString;
     private File        mFileDir;
-    private File[]      mFileTab;
+    private List<File>  mFileList;
     private TextView    mTempTextView;
 
 
@@ -41,11 +43,14 @@ public class GridRecyclerView extends AppCompatActivity {
 
         mTempTextView = (TextView) findViewById(R.id.test_textview);
 
+        mFileList = new ArrayList<File>();
 
-        getFilenames();
+        getFiles(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath(),
+                     mFileList);
 
 //        mAdapter = new DataAdapter(testDataSet);
-        mAdapter = new DataAdapter(mFileNameString);
+//        mAdapter = new DataAdapter(mFileNameString);
+        mAdapter = new DataAdapter(mFileList);
         mRecyclerView.setAdapter(mAdapter);
 
         testDataSet[6] = new String(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath());
@@ -90,26 +95,41 @@ public class GridRecyclerView extends AppCompatActivity {
     }
 
 
-    private void getFilenames(){
-        mFileDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        if (mFileDir.isDirectory()) {
-            mFileTab = mFileDir.listFiles();
 
-            mFileNameString = new String[mFileTab.length];
+    // Search the dirName directory for files and also search all of the subdirectories
+    private void getFiles(String dirName, List<File> fileList){
+//        mFileDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
-            String tmp;
-            for (int i = 0; i < mFileTab.length; i++) {
-                mFileNameString[i] = mFileTab[i].getName();
+        File dir = new File(dirName);
+        File[] fileTab = dir.listFiles();
 
+        for(File file : fileTab) {
+            if(file.isFile()) {
+                fileList.add(file);
+            } else if(file.isDirectory()){
+                getFiles(file.getAbsolutePath(), fileList);
             }
-
-            tmp = mFileTab.length + "\n" + mFileNameString[1];
-
-            mTempTextView.setText(tmp);
-
-        } else {
-            mTempTextView.setText("mFile is not a directory!" + mFileDir);
         }
+
+
+//        if (mFileDir.isDirectory()) {
+//            mFileList = mFileDir.listFiles();
+//
+//            mFileNameString = new String[mFileTab.length];
+//
+//            String tmp;
+//            for (int i = 0; i < mFileTab.length; i++) {
+//                mFileNameString[i] = mFileTab[i].getName();
+//
+//            }
+//
+//            tmp = mFileTab.length + "\n" + mFileNameString[1];
+//
+//            mTempTextView.setText(tmp);
+//
+//        } else {
+//            mTempTextView.setText("mFile is not a directory!" + mFileDir);
+//        }
 
 
     }
