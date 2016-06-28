@@ -1,6 +1,7 @@
 package com.stergiadis.simplegallery;
 
 import android.os.Environment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -25,6 +26,8 @@ public class GridRecyclerView extends AppCompatActivity {
     private RecyclerView.Adapter        mAdapter;
     private RecyclerView.LayoutManager  mLayoutManager;
 
+    private SwipeRefreshLayout          mSwipeRefreshLayout;
+
     private String[]    mFileNameString;
     private File        mFileDir;
     private List<File>  mFileList;
@@ -45,13 +48,14 @@ public class GridRecyclerView extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
 
-        mTempTextView = (TextView) findViewById(R.id.test_textview);
 
         mFileList = new ArrayList<File>();
 
         getFiles(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath(),
                      mFileList);
 
+
+        //only n files showing, user can shuffle those with swipe down (swipeRefresh)
         if(mFileList.size() > MAX_NUMBER_OF_GRID_ELEMENTS){
             long seed = System.nanoTime();
             Collections.shuffle(mFileList, new Random(seed));
@@ -66,6 +70,7 @@ public class GridRecyclerView extends AppCompatActivity {
 
         setGridListeners();
 
+        setSwipeRefresh();
 
     }
 
@@ -85,6 +90,8 @@ public class GridRecyclerView extends AppCompatActivity {
                 if(child != null && gestureDetector.onTouchEvent(e)) {
                     int position = rv.getChildAdapterPosition(child);
                         Toast.makeText(getApplicationContext(), mFileList.get(position).getName(), Toast.LENGTH_SHORT).show();
+
+
                 }
 
                 return false;
@@ -101,6 +108,21 @@ public class GridRecyclerView extends AppCompatActivity {
             }
 
         });
+    }
+
+    private void setSwipeRefresh(){
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                long seed = System.nanoTime();
+                Collections.shuffle(mFileList, new Random(seed));
+                mAdapter.notifyDataSetChanged();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+
+        });
+
     }
 
 
