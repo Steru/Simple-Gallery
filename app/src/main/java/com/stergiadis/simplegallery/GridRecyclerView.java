@@ -1,20 +1,28 @@
 package com.stergiadis.simplegallery;
 
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
 
 public class GridRecyclerView extends AppCompatActivity {
 
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView                mRecyclerView;
+    private RecyclerView.Adapter        mAdapter;
+    private RecyclerView.LayoutManager  mLayoutManager;
+
+    private String[]    mFileNameString;
+    private File        mFileDir;
+    private File[]      mFileTab;
+    private TextView    mTempTextView;
 
 
     String[] testDataSet = {"one", "oni", "bum", "test", "test2", "fsdfb", "sfdg"};
@@ -30,10 +38,20 @@ public class GridRecyclerView extends AppCompatActivity {
         mLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new DataAdapter(testDataSet);
+
+        mTempTextView = (TextView) findViewById(R.id.test_textview);
+
+
+        getFilenames();
+
+//        mAdapter = new DataAdapter(testDataSet);
+        mAdapter = new DataAdapter(mFileNameString);
         mRecyclerView.setAdapter(mAdapter);
 
+        testDataSet[6] = new String(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath());
+
         setGridListeners();
+
 
     }
 
@@ -69,5 +87,30 @@ public class GridRecyclerView extends AppCompatActivity {
             }
 
         });
+    }
+
+
+    private void getFilenames(){
+        mFileDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        if (mFileDir.isDirectory()) {
+            mFileTab = mFileDir.listFiles();
+
+            mFileNameString = new String[mFileTab.length];
+
+            String tmp;
+            for (int i = 0; i < mFileTab.length; i++) {
+                mFileNameString[i] = mFileTab[i].getName();
+
+            }
+
+            tmp = mFileTab.length + "\n" + mFileNameString[1];
+
+            mTempTextView.setText(tmp);
+
+        } else {
+            mTempTextView.setText("mFile is not a directory!" + mFileDir);
+        }
+
+
     }
 }
