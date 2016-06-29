@@ -30,7 +30,6 @@ public class FullscreenImageFragment extends Fragment {
     private String mName, mPath;
 
     public FullscreenImageFragment(){
-
     }
 
     @Override
@@ -51,8 +50,6 @@ public class FullscreenImageFragment extends Fragment {
         return fragment;
     }
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.fragment_fullscreen_image, container, false);
@@ -72,14 +69,7 @@ public class FullscreenImageFragment extends Fragment {
                 .fitCenter()
                 .into(iv);
 
-//        TextView tv = (TextView) v.findViewById(R.id.fragment_fullscreen_viewer_text1);
-//        tv.setText(mName);
-
         return v;
-
-
-//        mImagesList = (List<File>) getArguments().getParcelable("imagesList");
-
     }
 
     @Override
@@ -89,15 +79,7 @@ public class FullscreenImageFragment extends Fragment {
         savedInstanceState.putString("imagePath", mPath);
     }
 
-
-
-
     public int getSelectedPosition() { return mSelectedPosition; }
-
-
-
-
-
 
 }
 

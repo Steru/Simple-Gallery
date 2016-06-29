@@ -23,13 +23,10 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     private Context      mContext;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
-        public TextView imageNameTextView;
         public ImageView thumbnail;
 
         public ViewHolder(View v) {
             super(v);
-            imageNameTextView = (TextView) v.findViewById(R.id.grid_content_text_view);
             thumbnail         = (ImageView) v.findViewById(R.id.grid_content_image_view);
         }
     }
@@ -38,7 +35,6 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         mImageList = imageList;
         mContext = context;
     }
-
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -49,14 +45,8 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         return vh;
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-//        holder.imageNameTextView.setText(mDataset[position]);
-
-//        holder.imageNameTextView.setText(mImageList.get(position).getName());
 
         Glide.with(mContext)
                 .load(mImageList.get(position).getPath())
@@ -69,10 +59,8 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
 
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-//        return mDataset.length;
         return mImageList.size();
 
     }
