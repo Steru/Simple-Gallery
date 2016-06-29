@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<RelativeLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <TextView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/error_textview"
+    android:gravity="center"
+    android:visibility="invisible"
+
+        />
+
 <android.support.v4.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/swipeRefreshLayout"
     >
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/grid_recycler_view"
@@ -14,10 +30,11 @@
         android:layout_width="wrap_content"
         />
 
+
+
 </android.support.v4.widget.SwipeRefreshLayout>
 
 
-
-
+</RelativeLayout>
 
 

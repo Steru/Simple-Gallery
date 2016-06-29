@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.stergiadis.simplegallery.model.Image;
@@ -21,9 +22,9 @@ import java.util.List;
 
 public class GridRecyclerView extends AppCompatActivity {
 
-    private static final int MAX_NUMBER_OF_GRID_ELEMENTS = 750;
-    private static final String[] EXTENSIONS_STRING_TAB = {"jpg", "bmp", "png", "jpeg"};
-    private static final int GRID_SPAN_COUNT = 3;
+    private static final int        MAX_NUMBER_OF_GRID_ELEMENTS = 150;
+    private static final String[]   EXTENSIONS_STRING_TAB = {"jpg", "bmp", "png", "jpeg"};
+    private static final int        GRID_SPAN_COUNT = 3;
 
     public static final String PARCELABLE_NAME_IMAGE_LIST = "ImageList";
     public static final String PARCELABLE_NAME_POSITION = "position";
@@ -36,16 +37,17 @@ public class GridRecyclerView extends AppCompatActivity {
 
     private SwipeRefreshLayout          mSwipeRefreshLayout;
 
-    private List<File>     mFileList;
+    private List<File>          mFileList;
     private ArrayList<Image>    mImageList;
     private ArrayList<Image>    mImageSubList; //MAX_NUMBER_OF_GRID_ELEMENTS images drawn from mImageList
+
+    private TextView mErrortxt;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid_recycler_view);
-
 
         mRecyclerView = (RecyclerView) findViewById(R.id.grid_recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -55,20 +57,21 @@ public class GridRecyclerView extends AppCompatActivity {
 
 
         mFileList = new ArrayList<>();
+        mErrortxt = (TextView) findViewById(R.id.error_textview);
 
         boolean cardIsPresent = android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
         if(cardIsPresent == false) {
-
-            Toast.makeText(getApplicationContext(), R.string.error_msg_no_sdcard_found, Toast.LENGTH_LONG);
+            mErrortxt.setVisibility(View.VISIBLE);
+            mErrortxt.setText(R.string.error_msg_no_sdcard_found);
 
         } else {
             getFiles(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath(),
                     mFileList);
 
             if (mFileList.isEmpty()) {
-                Toast.makeText(getApplicationContext(), R.string.error_msg_no_files_found, Toast.LENGTH_LONG);
+                mErrortxt.setVisibility(View.VISIBLE);
+                mErrortxt.setText(R.string.error_msg_no_files_found);
             } else {
-
 
                 //write filenames and paths from List<File> to List<Image>
                 mImageList = new ArrayList<>();
@@ -78,6 +81,7 @@ public class GridRecyclerView extends AppCompatActivity {
                     img.setPath(f.getAbsolutePath());
                     mImageList.add(img);
                 }
+
 
                 if (mImageList.size() > MAX_NUMBER_OF_GRID_ELEMENTS) {
                     mMaxImageSubListItems = MAX_NUMBER_OF_GRID_ELEMENTS;
@@ -93,7 +97,6 @@ public class GridRecyclerView extends AppCompatActivity {
                     Collections.shuffle(mImageList);
                     mImageSubList = new ArrayList<>(mImageList.subList(0, mMaxImageSubListItems));
                 }
-
                 mAdapter = new DataAdapter(mImageSubList, getApplicationContext());
                 mRecyclerView.setAdapter(mAdapter);
 
@@ -129,7 +132,7 @@ public class GridRecyclerView extends AppCompatActivity {
                     int position = rv.getChildAdapterPosition(child);
 
                     if (mImageList.isEmpty()){
-                        Toast.makeText(getApplicationContext(), R.string.error_msg_no_files_found , Toast.LENGTH_LONG);
+                        Toast.makeText(getApplicationContext(), R.string.error_msg_no_files_found , Toast.LENGTH_LONG).show();
                     }else {
                         Intent intent = new Intent(getApplicationContext(), FullscreenImageActivity.class);
                         intent.putParcelableArrayListExtra(PARCELABLE_NAME_IMAGE_LIST, mImageSubList);
@@ -172,19 +175,23 @@ public class GridRecyclerView extends AppCompatActivity {
 
     // Search the dirName directory and subdirectories for image files
     private void getFiles(String dirName, List<File> fileList){
-
         File dir = new File(dirName);
 
         File[] fileTab = dir.listFiles();
 
-        for(File file : fileTab) {
-            //check if it's a directory or a file, and check if the file has the right extension
-            if(file.isFile() && fileIsAnImage(file.getName())) {
-                fileList.add(file);
-            } else if(file.isDirectory()){
-                getFiles(file.getAbsolutePath(), fileList);
+        if(fileTab != null) {
+            for (File file : fileTab) {
+                //check if it's a directory or a file, and check if the file has the right extension
+                if (file.isFile() && fileIsAnImage(file.getName())) {
+                    fileList.add(file);
+                } else if (file.isDirectory()) {
+                    getFiles(file.getAbsolutePath(), fileList);
+                }
             }
+//        } else{
+//            fileList.clear();
         }
+
 
     }
 
