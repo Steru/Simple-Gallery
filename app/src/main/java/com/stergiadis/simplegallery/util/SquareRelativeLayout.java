@@ -1,4 +1,4 @@
-package com.stergiadis.simplegallery;
+package com.stergiadis.simplegallery.util;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -31,6 +31,7 @@ public class SquareRelativeLayout extends RelativeLayout{
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        //size is -> width x width
         super.onMeasure(widthMeasureSpec, widthMeasureSpec);
     }
 }

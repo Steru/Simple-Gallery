@@ -1,4 +1,4 @@
-package com.stergiadis.simplegallery;
+package com.stergiadis.simplegallery.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
