@@ -1,26 +1,20 @@
 package com.stergiadis.simplegallery;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class FullscreenImageActivity extends AppCompatActivity {
 
 
     private ViewPager mViewPager;
-    private PagerAdapter mPagerAdapter;
 
     private FullscreenAdapter mFullscreenAdapter;
     private ArrayList<Image> mImageList;
@@ -32,6 +26,9 @@ public class FullscreenImageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                             WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_fullscreen_image);
         mImageList = new ArrayList<>();
@@ -64,7 +61,11 @@ public class FullscreenImageActivity extends AppCompatActivity {
 
             }
         });
+
     }
+
+
+
 
     public class FullscreenAdapter extends FragmentPagerAdapter {
         private ArrayList<Image> mImageList = new ArrayList<>();
