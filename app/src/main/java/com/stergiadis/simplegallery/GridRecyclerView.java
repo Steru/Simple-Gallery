@@ -16,13 +16,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class GridRecyclerView extends AppCompatActivity {
 
     private static final int MAX_NUMBER_OF_GRID_ELEMENTS = 30;
     private static final String[] EXTENSIONS_STRING_TAB = {"jpg", "bmp", "png", "jpeg"};
     private static final int GRID_SPAN_COUNT = 3;
+
+    public static final String PARCELABLE_NAME_IMAGE_LIST = "ImageList";
+    public static final String PARCELABLE_NAME_POSITION = "position";
 
     private RecyclerView                mRecyclerView;
     private RecyclerView.Adapter        mAdapter;
@@ -99,9 +101,14 @@ public class GridRecyclerView extends AppCompatActivity {
 //                    Bundle bundle = new Bundle();
 //                    bundle.putSerializable("fileList", mImageList);
 
-                    Intent intent = new Intent(getApplicationContext(), FullscreenImageActivity.class);
-                    intent.putParcelableArrayListExtra("ImageList", mImageSubList);
-
+                    if (mImageList.isEmpty()){
+                        Toast.makeText(getApplicationContext(), "mImageListIsEmpty", Toast.LENGTH_LONG);
+                    }else {
+                        Intent intent = new Intent(getApplicationContext(), FullscreenImageActivity.class);
+                        intent.putParcelableArrayListExtra(PARCELABLE_NAME_IMAGE_LIST, mImageSubList);
+                        intent.putExtra(PARCELABLE_NAME_POSITION, position);
+                        startActivity(intent);
+                    }
                     //getArguments().getSerializable("fileList");
 
                 }

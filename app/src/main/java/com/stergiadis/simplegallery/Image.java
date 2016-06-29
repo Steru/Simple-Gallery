@@ -11,7 +11,7 @@ public class Image implements Parcelable {
     private String mPath;
 
     public Image(){
-        
+
     }
 
     public String getName() {
