@@ -54,16 +54,22 @@ public class FullscreenImageFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle SavedInstanceState){
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.fragment_fullscreen_image, container, false);
 
         ImageView iv = (ImageView) v.findViewById(R.id.fragment_fullscreen_imageview);
 
+        if(savedInstanceState != null) {
+            mPath = savedInstanceState.getString("imagePath");
+        }
+
         Glide.with(getActivity())
                 .load(mPath)
                 .thumbnail(0.3f)
+//                .skipMemoryCache(true)
 //                .centerCrop()
-                .crossFade(300)
+//                .crossFade(300)
+                .fitCenter()
                 .into(iv);
 
 //        TextView tv = (TextView) v.findViewById(R.id.fragment_fullscreen_viewer_text1);
@@ -75,6 +81,14 @@ public class FullscreenImageFragment extends Fragment {
 //        mImagesList = (List<File>) getArguments().getParcelable("imagesList");
 
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putInt("currentPosition", mSelectedPosition);
+        savedInstanceState.putString("imagePath", mPath);
+    }
+
 
 
 

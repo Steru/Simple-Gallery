@@ -69,6 +69,26 @@ public class FullscreenImageActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        savedInstanceState.putParcelableArrayList(GridRecyclerView.PARCELABLE_NAME_IMAGE_LIST, mImageList);
+        savedInstanceState.putInt(GridRecyclerView.PARCELABLE_NAME_POSITION, mCurrentPosition);
+
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        // Always call the superclass so it can restore the view hierarchy
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // Restore state members from saved instance
+        mImageList       = savedInstanceState.getParcelableArrayList(GridRecyclerView.PARCELABLE_NAME_IMAGE_LIST);
+        mCurrentPosition = savedInstanceState.getInt(GridRecyclerView.PARCELABLE_NAME_POSITION);
+    }
+
+
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_fullscreen_activity, menu);

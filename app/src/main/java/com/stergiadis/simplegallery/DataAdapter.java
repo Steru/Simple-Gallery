@@ -55,7 +55,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         // - replace the contents of the view with that element
 //        holder.imageNameTextView.setText(mDataset[position]);
 
-        holder.imageNameTextView.setText(mImageList.get(position).getName());
+//        holder.imageNameTextView.setText(mImageList.get(position).getName());
 
         Glide.with(mContext)
                 .load(mImageList.get(position).getPath())

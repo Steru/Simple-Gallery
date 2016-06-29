@@ -64,12 +64,14 @@ public class GridRecyclerView extends AppCompatActivity {
             mImageList.add(img);
         }
 
-
-        //only n files showing, user can shuffle those with swipe down (swipeRefresh)
         mImageSubList = new ArrayList<>();
-        if(mImageList.size() > MAX_NUMBER_OF_GRID_ELEMENTS){
-            Collections.shuffle(mImageList);
-            mImageSubList = new ArrayList<>(mImageList.subList(0,MAX_NUMBER_OF_GRID_ELEMENTS));
+        if(savedInstanceState != null){
+            mImageSubList = savedInstanceState.getParcelableArrayList(GridRecyclerView.PARCELABLE_NAME_IMAGE_LIST);
+        } else { //only n files showing, user can shuffle those with swipe down (swipeRefresh)
+            if (mImageList.size() > MAX_NUMBER_OF_GRID_ELEMENTS) {
+                Collections.shuffle(mImageList);
+                mImageSubList = new ArrayList<>(mImageList.subList(0, MAX_NUMBER_OF_GRID_ELEMENTS));
+            }
         }
 
         mAdapter = new DataAdapter(mImageSubList, getApplicationContext());
@@ -80,6 +82,15 @@ public class GridRecyclerView extends AppCompatActivity {
         setSwipeRefresh();
 
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        savedInstanceState.putParcelableArrayList(GridRecyclerView.PARCELABLE_NAME_IMAGE_LIST, mImageSubList);
+
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+
 
     private void setGridListeners(){
         mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
