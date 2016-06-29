@@ -6,9 +6,5 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.stergiadis.simplegallery.FullscreenImageActivity"
     >
-    <item android:id="@+id/action_settings"
-          android:title="@string/app_name"
-          android:orderInCategory="100"
-          app:showAsAction="never" />
 
 </menu>
