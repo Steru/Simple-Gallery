@@ -31,8 +31,8 @@ public class GridRecyclerView extends AppCompatActivity {
     private SwipeRefreshLayout          mSwipeRefreshLayout;
 
     private List<File>     mFileList;
-    private List<Image>    mImageList;
-    private List<Image>    mImageSubList; //MAX_NUMBER_OF_GRID_ELEMENTS images drawn from mImageList
+    private ArrayList<Image>    mImageList;
+    private ArrayList<Image>    mImageSubList; //MAX_NUMBER_OF_GRID_ELEMENTS images drawn from mImageList
 
 
     @Override
@@ -64,10 +64,10 @@ public class GridRecyclerView extends AppCompatActivity {
 
 
         //only n files showing, user can shuffle those with swipe down (swipeRefresh)
+        mImageSubList = new ArrayList<>();
         if(mImageList.size() > MAX_NUMBER_OF_GRID_ELEMENTS){
-            long seed = System.nanoTime();
-            Collections.shuffle(mImageList, new Random(seed));
-            mImageSubList = mImageList.subList(0,MAX_NUMBER_OF_GRID_ELEMENTS);
+            Collections.shuffle(mImageList);
+            mImageSubList = new ArrayList<>(mImageList.subList(0,MAX_NUMBER_OF_GRID_ELEMENTS));
         }
 
         mAdapter = new DataAdapter(mImageSubList, getApplicationContext());
@@ -95,14 +95,14 @@ public class GridRecyclerView extends AppCompatActivity {
                 if(child != null && gestureDetector.onTouchEvent(e)) {
                     int position = rv.getChildAdapterPosition(child);
                     Toast.makeText(getApplicationContext(), mFileList.get(position).getName(), Toast.LENGTH_SHORT).show();
-//
+
 //                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable("fileList", a);
-//
-//                    Intent intent = new Intent(getApplicationContext(), FullscreenImageActivity.class);
+//                    bundle.putSerializable("fileList", mImageList);
 
+                    Intent intent = new Intent(getApplicationContext(), FullscreenImageActivity.class);
+                    intent.putParcelableArrayListExtra("ImageList", mImageSubList);
 
-//                    getArguments().getSerializable("fileList");
+                    //getArguments().getSerializable("fileList");
 
                 }
 
@@ -127,10 +127,11 @@ public class GridRecyclerView extends AppCompatActivity {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                long seed = System.nanoTime();
-                Collections.shuffle(mImageList, new Random(seed));
-                mImageSubList = mImageList.subList(0,MAX_NUMBER_OF_GRID_ELEMENTS);
-                mAdapter.notifyDataSetChanged();
+                Collections.shuffle(mImageList);
+                mImageSubList = new ArrayList<>(mImageList.subList(0,MAX_NUMBER_OF_GRID_ELEMENTS));
+//                mAdapter.notifyDataSetChanged();
+                mAdapter = new DataAdapter(mImageSubList, getApplicationContext());
+                mRecyclerView.setAdapter(mAdapter);
                 mSwipeRefreshLayout.setRefreshing(false);
             }
 
