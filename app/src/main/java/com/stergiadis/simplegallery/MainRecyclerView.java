@@ -33,7 +33,7 @@ public class MainRecyclerView extends AppCompatActivity {
 
     public static final String PARCELABLE_NAME_IMAGE_LIST = "ImageList";
     public static final String PARCELABLE_NAME_POSITION = "position";
-    public static final String PARCELABLE_NAME_GRIDLIST_VIEW_TRIGGER = "grid_list_boolean";
+    public static final String SAVED_INSTANCE_STATE_NAME_GRIDLIST_VIEW_TRIGGER = "grid_list_boolean";
 
 
     private int mMaxImageSubListItems;
@@ -100,7 +100,7 @@ public class MainRecyclerView extends AppCompatActivity {
                 mImageSubList = new ArrayList<>();
                 if (savedInstanceState != null) {
                     mImageSubList = savedInstanceState.getParcelableArrayList(MainRecyclerView.PARCELABLE_NAME_IMAGE_LIST);
-                    mListViewToggled = false;
+                    mListViewToggled = savedInstanceState.getBoolean(SAVED_INSTANCE_STATE_NAME_GRIDLIST_VIEW_TRIGGER);
                 } else {
                     //only n files showing, user can shuffle those with swipe down (swipeRefresh)
                     Collections.shuffle(mImageList);
@@ -131,7 +131,7 @@ public class MainRecyclerView extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
         savedInstanceState.putParcelableArrayList(PARCELABLE_NAME_IMAGE_LIST, mImageSubList);
-        savedInstanceState.putBoolean(PARCELABLE_NAME_GRIDLIST_VIEW_TRIGGER, mListViewToggled);
+        savedInstanceState.putBoolean(SAVED_INSTANCE_STATE_NAME_GRIDLIST_VIEW_TRIGGER, mListViewToggled);
         super.onSaveInstanceState(savedInstanceState);
     }
 
