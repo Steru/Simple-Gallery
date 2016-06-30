@@ -1,22 +1,14 @@
 package com.stergiadis.simplegallery;
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import java.io.File;
-import java.util.List;
 
 /**
  * Created by Steru on 2016-06-28.
@@ -63,9 +55,6 @@ public class FullscreenImageFragment extends Fragment {
         Glide.with(getActivity())
                 .load(mPath)
                 .thumbnail(0.3f)
-//                .skipMemoryCache(true)
-//                .centerCrop()
-//                .crossFade(300)
                 .fitCenter()
                 .into(iv);
 

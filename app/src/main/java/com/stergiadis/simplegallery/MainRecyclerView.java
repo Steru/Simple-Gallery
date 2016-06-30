@@ -35,7 +35,6 @@ public class MainRecyclerView extends AppCompatActivity {
     public static final String PARCELABLE_NAME_POSITION = "position";
     public static final String SAVED_INSTANCE_STATE_NAME_GRIDLIST_VIEW_TRIGGER = "grid_list_boolean";
 
-
     private int mMaxImageSubListItems;
 
     private RecyclerView                mRecyclerView;
@@ -52,7 +51,6 @@ public class MainRecyclerView extends AppCompatActivity {
 
     private TextView mErrortxt;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,9 +58,6 @@ public class MainRecyclerView extends AppCompatActivity {
 
         mRecyclerView = (RecyclerView) findViewById(R.id.grid_recycler_view);
         mRecyclerView.setHasFixedSize(true);
-
-
-
 
         mFileList = new ArrayList<>();
         mErrortxt = (TextView) findViewById(R.id.error_textview);
@@ -90,7 +85,6 @@ public class MainRecyclerView extends AppCompatActivity {
                     mImageList.add(img);
                 }
 
-
                 if (mImageList.size() > MAX_NUMBER_OF_GRID_ELEMENTS) {
                     mMaxImageSubListItems = MAX_NUMBER_OF_GRID_ELEMENTS;
                 } else{
@@ -107,8 +101,6 @@ public class MainRecyclerView extends AppCompatActivity {
                     mImageSubList = new ArrayList<>(mImageList.subList(0, mMaxImageSubListItems));
                 }
 
-
-//                mAdapter = new GridDataAdapter(mImageSubList, getApplicationContext());
                 if(mListViewToggled){
                     mAdapter = new LinearDataAdapter(mImageSubList, getApplicationContext());
                     mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -117,7 +109,7 @@ public class MainRecyclerView extends AppCompatActivity {
                     mLayoutManager = new GridLayoutManager(getApplicationContext(), GRID_SPAN_COUNT);
 
                 }
-//                mAdapter = new LinearDataAdapter(mImageSubList, getApplicationContext());
+
                 mRecyclerView.setLayoutManager(mLayoutManager);
                 mRecyclerView.setAdapter(mAdapter);
 
@@ -249,8 +241,6 @@ public class MainRecyclerView extends AppCompatActivity {
                     getFiles(file.getAbsolutePath(), fileList);
                 }
             }
-//        } else{
-//            fileList.clear();
         }
 
 
