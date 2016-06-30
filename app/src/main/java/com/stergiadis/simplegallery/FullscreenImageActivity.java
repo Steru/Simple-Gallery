@@ -35,8 +35,8 @@ public class FullscreenImageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fullscreen_image);
         mImageList = new ArrayList<>();
 
-        mImageList = getIntent().getParcelableArrayListExtra(GridRecyclerView.PARCELABLE_NAME_IMAGE_LIST);
-        mCurrentPosition = getIntent().getIntExtra(GridRecyclerView.PARCELABLE_NAME_POSITION, 0);
+        mImageList = getIntent().getParcelableArrayListExtra(MainRecyclerView.PARCELABLE_NAME_IMAGE_LIST);
+        mCurrentPosition = getIntent().getIntExtra(MainRecyclerView.PARCELABLE_NAME_POSITION, 0);
 
         mFullscreenAdapter = new FullscreenAdapter(getSupportFragmentManager(), mImageList);
 //        mViewPager.setPageTransformer();
@@ -65,8 +65,8 @@ public class FullscreenImageActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
-        savedInstanceState.putParcelableArrayList(GridRecyclerView.PARCELABLE_NAME_IMAGE_LIST, mImageList);
-        savedInstanceState.putInt(GridRecyclerView.PARCELABLE_NAME_POSITION, mCurrentPosition);
+        savedInstanceState.putParcelableArrayList(MainRecyclerView.PARCELABLE_NAME_IMAGE_LIST, mImageList);
+        savedInstanceState.putInt(MainRecyclerView.PARCELABLE_NAME_POSITION, mCurrentPosition);
 
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -75,8 +75,8 @@ public class FullscreenImageActivity extends AppCompatActivity {
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        mImageList       = savedInstanceState.getParcelableArrayList(GridRecyclerView.PARCELABLE_NAME_IMAGE_LIST);
-        mCurrentPosition = savedInstanceState.getInt(GridRecyclerView.PARCELABLE_NAME_POSITION);
+        mImageList       = savedInstanceState.getParcelableArrayList(MainRecyclerView.PARCELABLE_NAME_IMAGE_LIST);
+        mCurrentPosition = savedInstanceState.getInt(MainRecyclerView.PARCELABLE_NAME_POSITION);
     }
 
     @Override

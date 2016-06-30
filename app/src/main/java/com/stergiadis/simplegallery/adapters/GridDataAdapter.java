@@ -1,4 +1,4 @@
-package com.stergiadis.simplegallery;
+package com.stergiadis.simplegallery.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -6,10 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.stergiadis.simplegallery.R;
 import com.stergiadis.simplegallery.model.Image;
 
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Created by Steru on 2016-06-27.
  */
-public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
+public class GridDataAdapter extends RecyclerView.Adapter<GridDataAdapter.ViewHolder> {
 
     private List<Image> mImageList;
     private Context      mContext;
@@ -31,7 +31,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
         }
     }
 
-    public DataAdapter(List<Image> imageList, Context context) {
+    public GridDataAdapter(List<Image> imageList, Context context) {
         mImageList = imageList;
         mContext = context;
     }

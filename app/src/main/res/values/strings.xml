@@ -10,4 +10,6 @@
     <string name="title_activity_fullscreen_viewer">FullscreenViewerActivity</string>
     <string name="error_msg_no_files_found">Error! No pictures found in the default pictures folder.</string>
     <string name="error_msg_no_sdcard_found">Error! No SD card found.</string>
+    <string name="menu_toggle_view">Toggle grid/list view</string>
+    <string name="action_settings">Action settings</string>
 </resources>

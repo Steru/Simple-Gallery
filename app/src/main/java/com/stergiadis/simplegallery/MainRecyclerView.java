@@ -6,13 +6,18 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.stergiadis.simplegallery.adapters.GridDataAdapter;
+import com.stergiadis.simplegallery.adapters.LinearDataAdapter;
 import com.stergiadis.simplegallery.model.Image;
 
 import java.io.File;
@@ -20,14 +25,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GridRecyclerView extends AppCompatActivity {
+public class MainRecyclerView extends AppCompatActivity {
 
-    private static final int        MAX_NUMBER_OF_GRID_ELEMENTS = 150;
+    private static final int        MAX_NUMBER_OF_GRID_ELEMENTS = 30;
     private static final String[]   EXTENSIONS_STRING_TAB = {"jpg", "bmp", "png", "jpeg"};
     private static final int        GRID_SPAN_COUNT = 3;
 
     public static final String PARCELABLE_NAME_IMAGE_LIST = "ImageList";
     public static final String PARCELABLE_NAME_POSITION = "position";
+    public static final String PARCELABLE_NAME_GRIDLIST_VIEW_TRIGGER = "grid_list_boolean";
+
 
     private int mMaxImageSubListItems;
 
@@ -36,6 +43,8 @@ public class GridRecyclerView extends AppCompatActivity {
     private RecyclerView.LayoutManager  mLayoutManager;
 
     private SwipeRefreshLayout          mSwipeRefreshLayout;
+
+    private boolean mListViewToggled;
 
     private List<File>          mFileList;
     private ArrayList<Image>    mImageList;
@@ -52,8 +61,7 @@ public class GridRecyclerView extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.grid_recycler_view);
         mRecyclerView.setHasFixedSize(true);
 
-        mLayoutManager = new GridLayoutManager(getApplicationContext(), GRID_SPAN_COUNT);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+
 
 
         mFileList = new ArrayList<>();
@@ -91,13 +99,26 @@ public class GridRecyclerView extends AppCompatActivity {
 
                 mImageSubList = new ArrayList<>();
                 if (savedInstanceState != null) {
-                    mImageSubList = savedInstanceState.getParcelableArrayList(GridRecyclerView.PARCELABLE_NAME_IMAGE_LIST);
+                    mImageSubList = savedInstanceState.getParcelableArrayList(MainRecyclerView.PARCELABLE_NAME_IMAGE_LIST);
+                    mListViewToggled = false;
                 } else {
                     //only n files showing, user can shuffle those with swipe down (swipeRefresh)
                     Collections.shuffle(mImageList);
                     mImageSubList = new ArrayList<>(mImageList.subList(0, mMaxImageSubListItems));
                 }
-                mAdapter = new DataAdapter(mImageSubList, getApplicationContext());
+
+
+//                mAdapter = new GridDataAdapter(mImageSubList, getApplicationContext());
+                if(mListViewToggled){
+                    mAdapter = new LinearDataAdapter(mImageSubList, getApplicationContext());
+                    mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                } else {
+                    mAdapter = new GridDataAdapter(mImageSubList, getApplicationContext());
+                    mLayoutManager = new GridLayoutManager(getApplicationContext(), GRID_SPAN_COUNT);
+
+                }
+//                mAdapter = new LinearDataAdapter(mImageSubList, getApplicationContext());
+                mRecyclerView.setLayoutManager(mLayoutManager);
                 mRecyclerView.setAdapter(mAdapter);
 
                 setGridListeners();
@@ -109,9 +130,40 @@ public class GridRecyclerView extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
-        savedInstanceState.putParcelableArrayList(GridRecyclerView.PARCELABLE_NAME_IMAGE_LIST, mImageSubList);
-
+        savedInstanceState.putParcelableArrayList(PARCELABLE_NAME_IMAGE_LIST, mImageSubList);
+        savedInstanceState.putBoolean(PARCELABLE_NAME_GRIDLIST_VIEW_TRIGGER, mListViewToggled);
         super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main_activity, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.menu_toggle_view) {
+            //if it was a list, make it a grid. And other way around.
+            if(mListViewToggled){
+                mListViewToggled = false;
+                mAdapter = new GridDataAdapter(mImageSubList, getApplicationContext());
+                mLayoutManager = new GridLayoutManager(getApplicationContext(), GRID_SPAN_COUNT);
+            } else {
+                mListViewToggled = true;
+                mAdapter = new LinearDataAdapter(mImageSubList, getApplicationContext());
+                mLayoutManager = new LinearLayoutManager(getApplicationContext());
+            }
+
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            mRecyclerView.setAdapter(mAdapter);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -164,8 +216,17 @@ public class GridRecyclerView extends AppCompatActivity {
                 Collections.shuffle(mImageList);
 
                 mImageSubList = new ArrayList<>(mImageList.subList(0,mMaxImageSubListItems));
-                mAdapter = new DataAdapter(mImageSubList, getApplicationContext());
+                if(mListViewToggled){
+                    mAdapter = new LinearDataAdapter(mImageSubList, getApplicationContext());
+                    mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                } else {
+                    mAdapter = new GridDataAdapter(mImageSubList, getApplicationContext());
+                    mLayoutManager = new GridLayoutManager(getApplicationContext(), GRID_SPAN_COUNT);
+                }
+                mRecyclerView.setLayoutManager(mLayoutManager);
                 mRecyclerView.setAdapter(mAdapter);
+
+
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
