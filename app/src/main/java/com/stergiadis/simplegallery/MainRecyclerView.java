@@ -31,9 +31,12 @@ public class MainRecyclerView extends AppCompatActivity {
     private static final String[]   EXTENSIONS_STRING_TAB = {"jpg", "bmp", "png", "jpeg"};
     private static final int        GRID_SPAN_COUNT = 3;
 
+
     public static final String PARCELABLE_NAME_IMAGE_LIST = "ImageList";
     public static final String PARCELABLE_NAME_POSITION = "position";
     public static final String SAVED_INSTANCE_STATE_NAME_GRIDLIST_VIEW_TRIGGER = "grid_list_boolean";
+
+    private int mMaxImageSubListItems;
 
     private int mMaxImageSubListItems;
 
@@ -107,7 +110,6 @@ public class MainRecyclerView extends AppCompatActivity {
                 } else {
                     mAdapter = new GridDataAdapter(mImageSubList, getApplicationContext());
                     mLayoutManager = new GridLayoutManager(getApplicationContext(), GRID_SPAN_COUNT);
-
                 }
 
                 mRecyclerView.setLayoutManager(mLayoutManager);
@@ -157,7 +159,6 @@ public class MainRecyclerView extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 
     private void setGridListeners(){
         mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
@@ -242,7 +243,6 @@ public class MainRecyclerView extends AppCompatActivity {
                 }
             }
         }
-
 
     }
 
