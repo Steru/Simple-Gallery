@@ -9,12 +9,11 @@
     card_view:cardCornerRadius="4dp"
     >
 
-
-    <com.stergiadis.simplegallery.util.SquareRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                            android:layout_height="match_parent"
-                                                            android:layout_width="match_parent"
+    <com.stergiadis.simplegallery.util.SquareRelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
         >
-
 
         <TextView
             android:layout_width="match_parent"
@@ -29,9 +28,7 @@
             android:id="@+id/grid_content_image_view"
             />
 
-
     </com.stergiadis.simplegallery.util.SquareRelativeLayout>
-
 
 </android.support.v7.widget.CardView>
 

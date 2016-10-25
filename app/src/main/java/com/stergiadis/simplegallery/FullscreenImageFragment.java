@@ -45,19 +45,15 @@ public class FullscreenImageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View v = inflater.inflate(R.layout.fragment_fullscreen_image, container, false);
-
         ImageView iv = (ImageView) v.findViewById(R.id.fragment_fullscreen_imageview);
-
         if(savedInstanceState != null) {
             mPath = savedInstanceState.getString("imagePath");
         }
-
         Glide.with(getActivity())
                 .load(mPath)
                 .thumbnail(0.3f)
                 .fitCenter()
                 .into(iv);
-
         return v;
     }
 
@@ -67,9 +63,6 @@ public class FullscreenImageFragment extends Fragment {
         savedInstanceState.putInt("currentPosition", mSelectedPosition);
         savedInstanceState.putString("imagePath", mPath);
     }
-
-    public int getSelectedPosition() { return mSelectedPosition; }
-
 }
 
 

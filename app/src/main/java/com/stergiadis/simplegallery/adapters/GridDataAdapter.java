@@ -20,14 +20,13 @@ import java.util.List;
 public class GridDataAdapter extends RecyclerView.Adapter<GridDataAdapter.ViewHolder> {
 
     private List<Image> mImageList;
-    private Context      mContext;
+    private Context mContext;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView thumbnail;
-
         public ViewHolder(View v) {
             super(v);
-            thumbnail         = (ImageView) v.findViewById(R.id.grid_content_image_view);
+            thumbnail = (ImageView) v.findViewById(R.id.grid_content_image_view);
         }
     }
 
@@ -47,7 +46,6 @@ public class GridDataAdapter extends RecyclerView.Adapter<GridDataAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
         Glide.with(mContext)
                 .load(mImageList.get(position).getPath())
                 .override(150,150)
@@ -56,12 +54,10 @@ public class GridDataAdapter extends RecyclerView.Adapter<GridDataAdapter.ViewHo
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .into(holder.thumbnail);
-
     }
 
     @Override
     public int getItemCount() {
         return mImageList.size();
-
     }
 }

@@ -6,13 +6,16 @@
 
     <ImageView
         android:id="@+id/list_content_image_view"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="@dimen/list_image_view_size"
+        android:layout_height="@dimen/list_image_view_size"
         />
     <TextView
         android:id="@+id/list_content_text_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:textSize="20sp"
+        android:ellipsize="middle"
+        android:maxLines="1"
         android:gravity="center"
         android:padding="10dp"/>
 

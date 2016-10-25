@@ -11,7 +11,6 @@ public class Image implements Parcelable {
     private String mPath;
 
     public Image(){
-
     }
 
     public String getName() {
@@ -29,7 +28,6 @@ public class Image implements Parcelable {
     public void setPath(String path) {
         this.mPath = path;
     }
-
 
     public Image(Parcel in) {
         String[] data = new String[2];
